@@ -6,19 +6,11 @@
 
 typedef unsigned int uint;
 
-#define INT_NAN INT_MIN
+const int INT_NAN = INT_MIN;
+const uint MAX_ITERATIONS = 999999999;
 
-uint MAX_ITERATIONS = 999999999;
-
-/*
-Problem A:
-
-1) Read input file
-2) Parse input files (extract sign and then value)
-3) Add to accumulated amount
-*/
-
-bool HumptyDumptyAssert(bool b, const char* msg)
+// Prints an error message if the parameter bool is false
+bool MySTDAssert(bool b, const char* msg)
 {
 	if (!b)
 	{
@@ -30,11 +22,12 @@ bool HumptyDumptyAssert(bool b, const char* msg)
 	return true;
 }
 
+
 int CalculateProblemA(const char* fileName)
 {
 	std::ifstream infile(fileName);
 
-	if(!HumptyDumptyAssert(infile.good(), "Input file not found!"))
+	if(!MySTDAssert(infile.good(), "Input file not found!"))
 	{
 		return INT_NAN;
 	}
@@ -77,18 +70,19 @@ int CalculateProblemB(const char* fileName)
 {
 	std::ifstream infile(fileName);
 
-	if (!HumptyDumptyAssert(infile.good(), "Input file not found!"))
+	if(!MySTDAssert(infile.good(), "Input file not found!"))
 	{
 		return INT_NAN;
 	}
 
-	int result = 0;
-	std::vector<int> vecResults;
-	vecResults.push_back(result);
+	std::vector<int> values;
+	std::vector<int> frequencies;	
 
 	uint iterations = 0;
 	std::string line;
-	while (std::getline(infile, line) && iterations < MAX_ITERATIONS )
+
+	// read from file
+	while (std::getline(infile, line)  )
 	{
 		std::istringstream iss(line);
 		char sign;
@@ -112,22 +106,28 @@ int CalculateProblemB(const char* fileName)
 		if (iss.fail())
 			continue;
 		
-		++iterations;
-		result += sign == '+' ? value : -value;
-		
-		if (std::find(vecResults.begin(), vecResults.end(), result) != vecResults.end())
-		{
-			return result;
-		}
+		int resultingValue = sign == '+' ? value : -value;
+		values.push_back(resultingValue);
+	}
 
-		
-		vecResults.push_back(result);
+	int currentFrequency = 0;
+	frequencies.push_back(currentFrequency);
 
-		if (infile.eof())
+	// find the first repeating frequency
+	while (iterations < MAX_ITERATIONS)
+	{
+		for (const int value : values)
 		{
-			infile.clear();
-			infile.seekg(0, std::ios::beg);
-		}
+			currentFrequency += value;
+			++iterations;
+
+			if (std::find(frequencies.begin(), frequencies.end(), currentFrequency) != frequencies.end())
+			{
+				return currentFrequency;
+			}
+
+			frequencies.push_back(currentFrequency);
+		}		
 	}
 
 	return INT_NAN;
