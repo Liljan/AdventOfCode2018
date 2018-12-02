@@ -64,7 +64,6 @@ bool HasAmountOfDiffs(const std::string& str1, const std::string& str2, const ui
 	return currentDiff == DIFFS;
 }
 
-
 uint SolveProblemA(const char* fileName)
 {
 	std::ifstream infile(fileName);
@@ -91,7 +90,6 @@ uint SolveProblemA(const char* fileName)
 	return amount2s * amount3s;
 }
 
-
 const std::string SolveProblemB(const char* fileName)
 {
 	std::ifstream infile(fileName);
@@ -111,17 +109,25 @@ const std::string SolveProblemB(const char* fileName)
 
 	const uint DIFFS = 1;
 
-	for (const std::string& str1 : tokens)
+	//for (const std::string& str1 : tokens)
+	for(uint i = 0; i < tokens.size(); ++i)
 	{
-		for (const std::string& str2 : tokens)
+		//for (const std::string& str2 : tokens)
+		for(uint j = i; j < tokens.size(); ++j)
 		{
+			if (i == j)
+				continue;
+
+			std::string str1 = tokens[i];
+			std::string str2 = tokens[j];
+
 			if (HasAmountOfDiffs(str1, str2, DIFFS))
 			{
 				std::string result;
-				for (uint i = 0; i < str1.length(); ++i)
+				for (uint m = 0; m < str1.length(); ++m)
 				{
-					if (str1[i] == str2[i])
-						result += str1[i];
+					if (str1[m] == str2[m])
+						result += str1[m];
 				}
 				return result;
 			}
@@ -130,7 +136,6 @@ const std::string SolveProblemB(const char* fileName)
 
 	return "";
 }
-
 
 int main()
 {
