@@ -23,7 +23,7 @@ bool MySTDAssert(bool b, const char* msg)
 }
 
 
-int CalculateProblemA(const char* fileName)
+int SolveProblemA(const char* fileName)
 {
 	std::ifstream infile(fileName);
 
@@ -137,7 +137,7 @@ int CalculateProblemB(const char* fileName)
 int main()
 {
 	const char* fileName = "Input.txt";
-	int ansA = CalculateProblemA(fileName);
+	int ansA = SolveProblemA(fileName);
 
 	if (ansA != INT_NAN)
 		std::cout << "The answer to problem A is '" << ansA << "'!" << std::endl;
